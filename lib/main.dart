@@ -18,18 +18,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Top());
-  }
-}
-
-class Top extends StatelessWidget {
-  const Top({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text('Idea Recorder')),
-        body: SafeArea(child: MainScreen()));
+        home: Scaffold(
+          appBar: AppBar(title: Text('IdeaRecorder')),
+          body: SafeArea(child: MainScreen())
+        )
+    );
   }
 }
 
