@@ -1,4 +1,4 @@
-package com.example.idea_recorder
+package com.example.weekly_task
 
 import io.flutter.embedding.android.FlutterActivity
 

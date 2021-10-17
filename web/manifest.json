@@ -1,6 +1,6 @@
 {
-    "name": "idea_recorder",
-    "short_name": "idea_recorder",
+    "name": "weekly_task",
+    "short_name": "weekly_task",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
