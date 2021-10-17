@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:idea_recorder/idea.dart';
+import 'package:idea_recorder/note.dart';
 import 'package:provider/provider.dart';
 import 'package:idea_recorder/ideas_model.dart';
 
@@ -39,26 +40,34 @@ class IdeaItem extends StatelessWidget {
         color: Color(0xfffff5fb),
         child: ListTile(
           title: Text(
-            idea.text,
+            idea.text.split('\n')[0],
             style: TextStyle(
                 decoration: idea.completed
                     ? TextDecoration.lineThrough
                     : TextDecoration.none,
                 color: idea.completed ? Colors.grey : Colors.black),
           ),
-          leading: IconButton(
-            icon: idea.completed
-                ? Icon(
-              Icons.check_circle,
-              color: completedIconColor,
-            )
-                : Icon(
-              Icons.circle,
-              color: notCompletedIconColor,
-            ),
-            onPressed: () => Provider.of<IdeasModel>(context, listen: false)
-                .toggleCompletedAt(index),
-          ),
+          subtitle: Text(idea.id ?? 'abc'),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return Note(idea: idea);
+              })
+            );
+          },
+          // leading: IconButton(
+          //   icon: idea.completed
+          //       ? Icon(
+          //     Icons.check_circle,
+          //     color: completedIconColor,
+          //   )
+          //       : Icon(
+          //     Icons.circle,
+          //     color: notCompletedIconColor,
+          //   ),
+          //   onPressed: () => Provider.of<IdeasModel>(context, listen: false)
+          //       .toggleCompletedAt(index),
+          // ),
         ),
       ),
     );

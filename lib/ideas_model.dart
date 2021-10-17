@@ -16,6 +16,12 @@ class IdeasModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void update(String id, String text) {
+    Idea idea = _ideas.firstWhere((item) => item.id == id);
+    idea.text = text;
+    notifyListeners();
+  }
+
   removeIdeaAt(int id) {
     _ideas.removeAt(id);
     notifyListeners();
