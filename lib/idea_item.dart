@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:idea_recorder/idea.dart';
 import 'package:idea_recorder/note.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:idea_recorder/ideas_model.dart';
 
@@ -36,8 +37,7 @@ class IdeaItem extends StatelessWidget {
       onDismissed: (DismissDirection direction) =>
           Provider.of<IdeasModel>(context, listen: false).removeIdeaAt(index),
       child: Card(
-        elevation: 0,
-        color: Color(0xfffff5fb),
+        color: Colors.white,
         child: ListTile(
           title: Text(
             idea.text.split('\n')[0],
@@ -47,7 +47,7 @@ class IdeaItem extends StatelessWidget {
                     : TextDecoration.none,
                 color: idea.completed ? Colors.grey : Colors.black),
           ),
-          subtitle: Text(idea.id ?? 'abc'),
+          subtitle: Text(DateFormat('yyyy/MM/dd').format(idea.created_at)),
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) {
