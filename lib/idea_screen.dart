@@ -33,10 +33,12 @@ class _IdeaScreenState extends State<IdeaScreen> {
     return Consumer<IdeasModel>(
         builder: (context, model, _) => Expanded(
             child: model.ideas.length != 0
-                ? ListView.builder(
-                controller: _scrollController,
+                ? ReorderableListView.builder(
                 itemCount: model.ideas.length,
-                itemBuilder: _ideaItemBuilder
+                itemBuilder: _ideaItemBuilder,
+                onReorder: (oldIndex, newIndex) {
+                  Provider.of<IdeasModel>(context, listen: false).swap(oldIndex, newIndex);
+                }
             ) : Center(
               child: Text('データがありません')
             )
@@ -46,7 +48,7 @@ class _IdeaScreenState extends State<IdeaScreen> {
 
   Widget _ideaItemBuilder(BuildContext context, int index) {
     final idea = Provider.of<IdeasModel>(context, listen: false).ideas[index];
-    return IdeaItem(idea: idea, index: index);
+    return IdeaItem(idea: idea, index: index, key: Key(idea.text));
   }
 
   void _scrollToBottom() {

@@ -22,6 +22,16 @@ class IdeasModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void swap(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+
+    Idea deleted = _ideas.removeAt(oldIndex);
+    _ideas.insert(newIndex, deleted);
+    notifyListeners();
+  }
+
   removeIdeaAt(int id) {
     _ideas.removeAt(id);
     notifyListeners();
