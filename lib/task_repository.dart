@@ -1,35 +1,35 @@
 import 'dart:convert';
 
-import 'package:idea_recorder/idea.dart';
+import 'package:weekly_task/task.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class IdeaRepoFactory {
-  static IdeaRepository getInstance() => PrefsIdeaRepo();
+class TaskRepoFactory {
+  static TaskRepository getInstance() => PrefsTaskRepo();
 }
 
-abstract class IdeaRepository {
-  fetchIdeas();
-  saveIdeas(List<Idea> ideas);
+abstract class TaskRepository {
+  fetchTasks();
+  saveTasks(List<Task> tasks);
 }
 
-class PrefsIdeaRepo implements IdeaRepository {
-  final kKey = 'IdeaRecorder';
+class PrefsTaskRepo implements TaskRepository {
+  final kKey = 'WeeklyTask';
 
-  List<Idea> decode(String? source) {
+  List<Task> decode(String? source) {
     var json = jsonDecode(source ?? '[]') as List;
-    return json.map((item) => Idea.fromJson(item)).toList();
+    return json.map((item) => Task.fromJson(item)).toList();
   }
 
   @override
-  Future<List<Idea>> fetchIdeas() async {
+  Future<List<Task>> fetchTasks() async {
     var prefs = await SharedPreferences.getInstance();
     return decode(prefs.getString(kKey));
   }
 
   @override
-  saveIdeas(List<Idea> ideas) async {
+  saveTasks(List<Task> tasks) async {
     var prefs = await SharedPreferences.getInstance();
-    var jsonString = jsonEncode(ideas);
+    var jsonString = jsonEncode(tasks);
     print(await prefs.setString(kKey, jsonString));
   }
 }

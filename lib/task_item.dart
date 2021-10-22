@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:idea_recorder/idea.dart';
-import 'package:idea_recorder/note.dart';
+import 'package:weekly_task/task.dart';
+import 'package:weekly_task/note.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:idea_recorder/ideas_model.dart';
+import 'package:weekly_task/tasks_model.dart';
 
-class IdeaItem extends StatelessWidget {
-  const IdeaItem({Key? key, required this.idea, required this.index}) : super(key: key);
+class TaskItem extends StatelessWidget {
+  const TaskItem({Key? key, required this.task, required this.index}) : super(key: key);
 
-  final Idea idea;
+  final Task task;
   final int index;
 
   @override
@@ -31,27 +31,27 @@ class IdeaItem extends StatelessWidget {
     }
 
     return Dismissible(
-      key: ValueKey<String>(idea.text),
+      key: ValueKey<String>(task.text),
       background: getDissmissBackground(true),
       secondaryBackground: getDissmissBackground(false),
       onDismissed: (DismissDirection direction) =>
-          Provider.of<IdeasModel>(context, listen: false).removeIdeaAt(index),
+          Provider.of<TasksModel>(context, listen: false).removeTaskAt(index),
       child: Card(
         color: Colors.white,
         child: ListTile(
           title: Text(
-            idea.text.split('\n')[0],
+            task.text.split('\n')[0],
             style: TextStyle(
-                decoration: idea.completed
+                decoration: task.completed
                     ? TextDecoration.lineThrough
                     : TextDecoration.none,
-                color: idea.completed ? Colors.grey : Colors.black),
+                color: task.completed ? Colors.grey : Colors.black),
           ),
-          subtitle: Text(DateFormat('yyyy/MM/dd').format(idea.created_at)),
+          subtitle: Text(DateFormat('yyyy/MM/dd').format(task.created_at)),
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) {
-                return Note(idea: idea);
+                return Note(task: task);
               })
             );
           },

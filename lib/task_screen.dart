@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:idea_recorder/idea_item.dart';
+import 'package:weekly_task/task_item.dart';
 import 'package:provider/provider.dart';
-import 'package:idea_recorder/ideas_model.dart';
-import 'package:idea_recorder/idea.dart';
+import 'package:weekly_task/tasks_model.dart';
+import 'package:weekly_task/task.dart';
 
-class IdeaScreen extends StatefulWidget {
-  const IdeaScreen({Key? key}) : super(key: key);
+class TaskScreen extends StatefulWidget {
+  const TaskScreen({Key? key}) : super(key: key);
 
   @override
-  _IdeaScreenState createState() => _IdeaScreenState();
+  _TaskScreenState createState() => _TaskScreenState();
 }
 
-class _IdeaScreenState extends State<IdeaScreen> {
+class _TaskScreenState extends State<TaskScreen> {
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -30,14 +30,14 @@ class _IdeaScreenState extends State<IdeaScreen> {
   }
 
   Widget _buildList() {
-    return Consumer<IdeasModel>(
+    return Consumer<TasksModel>(
         builder: (context, model, _) => Expanded(
-            child: model.ideas.length != 0
+            child: model.tasks.length != 0
                 ? ReorderableListView.builder(
-                itemCount: model.ideas.length,
-                itemBuilder: _ideaItemBuilder,
+                itemCount: model.tasks.length,
+                itemBuilder: _taskItemBuilder,
                 onReorder: (oldIndex, newIndex) {
-                  Provider.of<IdeasModel>(context, listen: false).swap(oldIndex, newIndex);
+                  Provider.of<TasksModel>(context, listen: false).swap(oldIndex, newIndex);
                 }
             ) : Center(
               child: Text('データがありません')
@@ -46,9 +46,9 @@ class _IdeaScreenState extends State<IdeaScreen> {
     );
   }
 
-  Widget _ideaItemBuilder(BuildContext context, int index) {
-    final idea = Provider.of<IdeasModel>(context, listen: false).ideas[index];
-    return IdeaItem(idea: idea, index: index, key: Key(idea.text));
+  Widget _taskItemBuilder(BuildContext context, int index) {
+    final task = Provider.of<TasksModel>(context, listen: false).tasks[index];
+    return TaskItem(task: task, index: index, key: Key(task.text));
   }
 
   void _scrollToBottom() {

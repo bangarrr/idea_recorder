@@ -1,24 +1,24 @@
 import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
-import 'package:idea_recorder/idea.dart';
-import 'package:idea_recorder/idea_repository.dart';
+import 'package:weekly_task/task.dart';
+import 'package:weekly_task/task_repository.dart';
 
-class IdeasModel extends ChangeNotifier {
-  List<Idea> _ideas;
+class TasksModel extends ChangeNotifier {
+  List<Task> _tasks;
 
-  UnmodifiableListView<Idea> get ideas => UnmodifiableListView(_ideas);
+  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
 
-  IdeasModel({@required ideas}) : _ideas = ideas;
+  TasksModel({@required tasks}) : _tasks = tasks;
 
-  void addIdea(Idea idea) {
-    _ideas.add(idea);
+  void addTask(Task task) {
+    _tasks.add(task);
     notifyListeners();
   }
 
   void update(String id, String text) {
-    Idea idea = _ideas.firstWhere((item) => item.id == id);
-    idea.text = text;
+    Task task = _tasks.firstWhere((item) => item.id == id);
+    task.text = text;
     notifyListeners();
   }
 
@@ -27,24 +27,24 @@ class IdeasModel extends ChangeNotifier {
       newIndex -= 1;
     }
 
-    Idea deleted = _ideas.removeAt(oldIndex);
-    _ideas.insert(newIndex, deleted);
+    Task deleted = _tasks.removeAt(oldIndex);
+    _tasks.insert(newIndex, deleted);
     notifyListeners();
   }
 
-  removeIdeaAt(int id) {
-    _ideas.removeAt(id);
+  removeTaskAt(int id) {
+    _tasks.removeAt(id);
     notifyListeners();
   }
 
   toggleCompletedAt(int id) {
-    _ideas[id].toggleCompleted();
+    _tasks[id].toggleCompleted();
 
     notifyListeners();
   }
 
   clearAll() {
-    _ideas.clear();
+    _tasks.clear();
 
     notifyListeners();
   }
@@ -52,10 +52,10 @@ class IdeasModel extends ChangeNotifier {
   @override
   void notifyListeners() {
     super.notifyListeners();
-    persist(this.ideas);
+    persist(this.tasks);
   }
 }
 
-persist(ideas) {
-  IdeaRepoFactory.getInstance().saveIdeas(ideas);
+persist(tasks) {
+  TaskRepoFactory.getInstance().saveTasks(tasks);
 }

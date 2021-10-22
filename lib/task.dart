@@ -1,7 +1,7 @@
 import 'package:random_string/random_string.dart';
 
-class Idea {
-  Idea({this.id, required this.text, DateTime? created_at, this.completed = false})
+class Task {
+  Task({this.id, required this.text, DateTime? created_at, this.completed = false})
       : this.created_at = created_at ?? DateTime.now();
 
   String? id;
@@ -9,7 +9,7 @@ class Idea {
   bool completed;
   DateTime created_at;
 
-  factory Idea.fromJson(Map<String, dynamic> json) => Idea(
+  factory Task.fromJson(Map<String, dynamic> json) => Task(
       id: json['id'],
       text: json['text'],
       completed: json['completed'],
