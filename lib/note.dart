@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:weekly_task/providers/NoteDetailProvider.dart';
 import 'package:weekly_task/task.dart';
 import 'package:weekly_task/tasks_model.dart';
-import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:weekly_task/calendar_modal.dart';
 
@@ -22,6 +24,7 @@ class _NoteState extends State<Note> {
     super.initState();
     if (widget.task != null) {
       _inputCtrl.text = widget.task!.text;
+      //_scheduledDate = widget.task!.scheduled_date;
     }
   }
 
@@ -52,7 +55,10 @@ class _NoteState extends State<Note> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ChangeNotifierProvider(
+        create: (context) => NoteDetailProvider(),
+        child: Consumer<NoteDetailProvider>(
+            builder: (context, model, _) => Scaffold(
         appBar: AppBar(
           title: Text('メモ'),
           actions: [
@@ -60,7 +66,8 @@ class _NoteState extends State<Note> {
           ],
         ),
         body: Column(children: [
-          Expanded(child: Container(
+          Expanded(
+              child: Container(
             padding: const EdgeInsets.all(12.0),
             child: TextField(
               controller: _inputCtrl,
@@ -71,25 +78,27 @@ class _NoteState extends State<Note> {
                   hintText: '入力してください', border: InputBorder.none),
             ),
           )),
-          MetaOptions()
-        ]));
+          MetaOptions(scheduledDate: model.scheduledDate)
+        ]))));
   }
 }
 
 class MetaOptions extends StatelessWidget {
-  const MetaOptions({Key? key}) : super(key: key);
+  final DateTime? scheduledDate;
+  const MetaOptions({Key? key, required this.scheduledDate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         _buildItem(
-            FontAwesomeIcons.calendarAlt, '予定日', '2021/1/23', false,
-            () => {CalendarModal(context).showCalendarModal()}
-        ),
-        _buildItem(FontAwesomeIcons.bell, '通知', 'なし', true,
-            () => {print("tuuti")}
-        ),
+            FontAwesomeIcons.calendarAlt,
+            '予定日',
+            scheduledDate != null ? DateFormat('yyyy-MM-dd').format(scheduledDate!) : 'なし',
+            false,
+            () => {CalendarModal(context).showCalendarModal()}),
+        _buildItem(
+            FontAwesomeIcons.bell, '通知', 'なし', true, () => {print("tuuti")}),
       ],
     );
   }
@@ -103,7 +112,8 @@ class MetaOptions extends StatelessWidget {
         trailing: Text(value));
   }
 
-  Widget _buildItem(IconData icon, String text, String value, bool isLast, GestureTapCallback onTap) {
+  Widget _buildItem(IconData icon, String text, String value, bool isLast,
+      GestureTapCallback onTap) {
     return GestureDetector(
         onTap: onTap,
         child: Container(
