@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
-import 'package:weekly_task/task.dart';
-import 'package:weekly_task/task_repository.dart';
+import 'package:weekly_task/models/task.dart';
+import 'package:weekly_task/repositories/task_repository.dart';
 
 class TasksModel extends ChangeNotifier {
   List<Task> _tasks;

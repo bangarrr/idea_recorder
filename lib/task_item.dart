@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weekly_task/task.dart';
+import 'package:weekly_task/models/task.dart';
 import 'package:weekly_task/note.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:weekly_task/tasks_model.dart';
+import 'package:weekly_task/providers/tasks_model.dart';
 
 class TaskItem extends StatelessWidget {
   const TaskItem({Key? key, required this.task, required this.index}) : super(key: key);

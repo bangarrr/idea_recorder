@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weekly_task/providers/NoteDetailProvider.dart';
-import 'package:weekly_task/task.dart';
-import 'package:weekly_task/tasks_model.dart';
+import 'package:weekly_task/models/task.dart';
+import 'package:weekly_task/providers/tasks_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:weekly_task/calendar_modal.dart';
 

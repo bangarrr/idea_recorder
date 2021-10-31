@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weekly_task/task_item.dart';
 import 'package:provider/provider.dart';
-import 'package:weekly_task/tasks_model.dart';
-import 'package:weekly_task/task.dart';
+import 'package:weekly_task/providers/tasks_model.dart';
 
 class TaskScreen extends StatefulWidget {
   const TaskScreen({Key? key}) : super(key: key);

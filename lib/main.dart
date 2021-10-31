@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:weekly_task/task_repository.dart';
+import 'package:weekly_task/repositories/task_repository.dart';
 import 'package:weekly_task/task_screen.dart';
-import 'package:weekly_task/tasks_model.dart';
+import 'package:weekly_task/providers/tasks_model.dart';
 import 'package:weekly_task/note.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';

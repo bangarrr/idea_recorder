@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:weekly_task/task.dart';
+import 'package:weekly_task/models/task.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskRepoFactory {
