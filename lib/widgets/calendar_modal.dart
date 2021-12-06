@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weekly_task/modal_overlay.dart';
-import 'package:weekly_task/calendar.dart';
+import 'package:weekly_task/widgets/modal_overlay.dart';
+import 'package:weekly_task/widgets/calendar.dart';
 import 'package:weekly_task/providers/NoteDetailProvider.dart';
 
 class CalendarModal {

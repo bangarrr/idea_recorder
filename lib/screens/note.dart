@@ -5,7 +5,7 @@ import 'package:weekly_task/providers/NoteDetailProvider.dart';
 import 'package:weekly_task/models/task.dart';
 import 'package:weekly_task/providers/tasks_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:weekly_task/calendar_modal.dart';
+import 'package:weekly_task/widgets/calendar_modal.dart';
 
 class Note extends StatefulWidget {
   final Task? task;
@@ -28,7 +28,7 @@ class _NoteState extends State<Note> {
     }
   }
 
-  void _inputComplete() {
+  void _inputComplete(BuildContext context) {
     String _text = _inputCtrl.text.trim();
 
     if (_text.isEmpty) {
@@ -42,11 +42,13 @@ class _NoteState extends State<Note> {
       return;
     }
 
+    var noteViewModel = Provider.of<NoteDetailProvider>(context, listen: false);
+
     if (widget.task != null) {
       Provider.of<TasksModel>(context, listen: false)
-          .update(widget.task!.id!, _text);
+          .update(widget.task!.id!, _text, noteViewModel.scheduledDate);
     } else {
-      Task task = Task(text: _text);
+      Task task = Task(text: _text, scheduled_date: noteViewModel.scheduledDate);
       Provider.of<TasksModel>(context, listen: false).addTask(task);
     }
 
@@ -62,7 +64,7 @@ class _NoteState extends State<Note> {
         appBar: AppBar(
           title: Text('メモ'),
           actions: [
-            IconButton(onPressed: _inputComplete, icon: Icon(Icons.check))
+            IconButton(onPressed: () => _inputComplete(context), icon: Icon(Icons.check))
           ],
         ),
         body: Column(children: [

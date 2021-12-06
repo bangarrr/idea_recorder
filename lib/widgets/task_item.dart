@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weekly_task/models/task.dart';
-import 'package:weekly_task/note.dart';
+import 'package:weekly_task/screens/note.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:weekly_task/providers/tasks_model.dart';
@@ -47,7 +47,7 @@ class TaskItem extends StatelessWidget {
                     : TextDecoration.none,
                 color: task.completed ? Colors.grey : Colors.black),
           ),
-          subtitle: Text(DateFormat('yyyy/MM/dd').format(task.created_at)),
+          subtitle: Text(task.formattedScheduledDate()),
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) {

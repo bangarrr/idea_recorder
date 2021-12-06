@@ -16,9 +16,10 @@ class TasksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void update(String id, String text) {
+  void update(String id, String text, DateTime? scheduledDate) {
     Task task = _tasks.firstWhere((item) => item.id == id);
     task.text = text;
+    task.scheduled_date = scheduledDate;
     notifyListeners();
   }
 

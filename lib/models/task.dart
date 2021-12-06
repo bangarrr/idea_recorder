@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:random_string/random_string.dart';
 
 class Task {
@@ -33,5 +34,9 @@ class Task {
 
   void toggleCompleted() {
     completed = !completed;
+  }
+
+  String formattedScheduledDate() {
+    return scheduled_date == null ? '' : DateFormat('yyyy/MM/dd').format(scheduled_date!);
   }
 }

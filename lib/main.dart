@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:weekly_task/repositories/task_repository.dart';
-import 'package:weekly_task/task_screen.dart';
+import 'package:weekly_task/screens/task_list.dart';
 import 'package:weekly_task/providers/tasks_model.dart';
-import 'package:weekly_task/note.dart';
+import 'package:weekly_task/screens/note.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -54,7 +54,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Weekly Task')),
-      body: SafeArea(child: TaskScreen()),
+      body: SafeArea(child: TaskList()),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           backgroundColor: Theme.of(context).primaryColor,

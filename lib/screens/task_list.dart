@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weekly_task/task_item.dart';
+import 'package:weekly_task/widgets/task_item.dart';
 import 'package:provider/provider.dart';
 import 'package:weekly_task/providers/tasks_model.dart';
 
-class TaskScreen extends StatefulWidget {
-  const TaskScreen({Key? key}) : super(key: key);
+class TaskList extends StatefulWidget {
+  const TaskList({Key? key}) : super(key: key);
 
   @override
-  _TaskScreenState createState() => _TaskScreenState();
+  _TaskListState createState() => _TaskListState();
 }
 
-class _TaskScreenState extends State<TaskScreen> {
+class _TaskListState extends State<TaskList> {
   ScrollController _scrollController = ScrollController();
 
   @override
