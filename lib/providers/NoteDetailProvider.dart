@@ -1,11 +1,9 @@
-import 'package:flutter/widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class NoteDetailProvider extends ChangeNotifier {
-  DateTime? _scheduledDate;
-  DateTime? get scheduledDate => _scheduledDate;
+class NoteDetailProvider extends StateNotifier<DateTime?> {
+  NoteDetailProvider() : super(null);
 
   void setScheduledDate(DateTime? date) {
-    _scheduledDate = date;
-    notifyListeners();
+    state = date;
   }
 }
