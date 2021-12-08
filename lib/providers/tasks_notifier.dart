@@ -18,7 +18,9 @@ class TasksNotifier extends StateNotifier<List<Task>> {
     persist(state);
   }
 
-  void update(String id, String text, DateTime? scheduledDate) {
+  void update(String? id, String text, DateTime? scheduledDate) {
+    if (id == null) return;
+
     List<Task> oldState = [...state];
     int index = oldState.indexWhere((item) => item.id == id);
     oldState[index].text = text;
@@ -28,27 +30,36 @@ class TasksNotifier extends StateNotifier<List<Task>> {
   }
 
   void swap(int oldIndex, int newIndex) {
+    List<Task> oldState = [...state];
+
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
 
-    Task deleted = state.removeAt(oldIndex);
-    state.insert(newIndex, deleted);
+    Task deleted = oldState.removeAt(oldIndex);
+    oldState.insert(newIndex, deleted);
+    state = oldState;
     persist(state);
   }
 
   removeTaskAt(int id) {
-    state.removeAt(id);
+    List<Task> oldState = [...state];
+    oldState.removeAt(id);
+    state = oldState;
     persist(state);
   }
 
   toggleCompletedAt(int id) {
-    state[id].toggleCompleted();
+    List<Task> oldState = [...state];
+    oldState[id].toggleCompleted();
+    state = oldState;
     persist(state);
   }
 
   clearAll() {
-    state.clear();
+    List<Task> oldState = [...state];
+    oldState.clear();
+    state = oldState;
     persist(state);
   }
 }

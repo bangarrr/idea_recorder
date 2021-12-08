@@ -3,12 +3,13 @@ import 'package:random_string/random_string.dart';
 
 class Task {
   Task({
-    this.id,
+    String? id,
     required this.text,
     this.scheduled_date,
     DateTime? created_at,
     this.completed = false
-  }) : this.created_at = created_at ?? DateTime.now();
+  }) : this.created_at = created_at ?? DateTime.now(),
+       this.id = id ?? randomAlphaNumeric(10);
 
   String? id;
   String text;
