@@ -1,53 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:weekly_task/models/task.dart';
+import 'package:weekly_task/states/tasks.dart';
 import 'package:weekly_task/widgets/task_item.dart';
-import 'package:provider/provider.dart';
-import 'package:weekly_task/providers/tasks_model.dart';
 
-class TaskList extends StatefulWidget {
-  const TaskList({Key? key}) : super(key: key);
-
-  @override
-  _TaskListState createState() => _TaskListState();
-}
-
-class _TaskListState extends State<TaskList> {
+class TaskList extends HookConsumerWidget {
   ScrollController _scrollController = ScrollController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tasks = ref.watch(tasksProvider) as List<Task>;
+
     return Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Column(
           children: [
-            _buildList(),
+            Expanded(
+              child: tasks.length != 0
+                  ? ReorderableListView(
+                  children: [
+                    for (var i = 0; i < tasks.length; i++)
+                      TaskItem(task: tasks[i], index: i, key: Key(tasks[i].created_at.toString()))
+                  ],
+                  onReorder: (oldIndex, newIndex) {
+                    ref.read(tasksProvider.notifier).swap(oldIndex, newIndex);
+                  }
+              ) : Center(child: Text('データがありません'))
+            )
           ],
         ),
       ),
     );
-  }
-
-  Widget _buildList() {
-    return Consumer<TasksModel>(
-        builder: (context, model, _) => Expanded(
-            child: model.tasks.length != 0
-                ? ReorderableListView.builder(
-                itemCount: model.tasks.length,
-                itemBuilder: _taskItemBuilder,
-                onReorder: (oldIndex, newIndex) {
-                  Provider.of<TasksModel>(context, listen: false).swap(oldIndex, newIndex);
-                }
-            ) : Center(
-              child: Text('データがありません')
-            )
-        )
-    );
-  }
-
-  Widget _taskItemBuilder(BuildContext context, int index) {
-    final task = Provider.of<TasksModel>(context, listen: false).tasks[index];
-    return TaskItem(task: task, index: index, key: Key(task.text));
   }
 
   void _scrollToBottom() {

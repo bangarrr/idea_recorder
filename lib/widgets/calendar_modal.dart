@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:weekly_task/states/note_detail.dart';
 import 'package:weekly_task/widgets/modal_overlay.dart';
 import 'package:weekly_task/widgets/calendar.dart';
-import 'package:weekly_task/providers/NoteDetailProvider.dart';
 
 class CalendarModal {
   BuildContext context;
@@ -20,7 +20,7 @@ class CalendarModal {
   }
 }
 
-class ModalContents extends StatefulWidget {
+class ModalContents extends ConsumerStatefulWidget {
   final BuildContext context;
   const ModalContents({Key? key, required this.context}) : super(key: key);
 
@@ -28,7 +28,7 @@ class ModalContents extends StatefulWidget {
   _ModalContentsState createState() => _ModalContentsState();
 }
 
-class _ModalContentsState extends State<ModalContents> {
+class _ModalContentsState extends ConsumerState<ModalContents> {
   DateTime? _scheduledDate;
 
   void _onDateSelected(DateTime date) {
@@ -52,7 +52,7 @@ class _ModalContentsState extends State<ModalContents> {
               TextButton(
                 child: const Text('選択'),
                 onPressed: () {
-                  Provider.of<NoteDetailProvider>(widget.context, listen: false).setScheduledDate(_scheduledDate);
+                  ref.read(noteProvider.notifier).setScheduledDate(_scheduledDate);
                   Navigator.of(widget.context).pop();
                 },
               ),

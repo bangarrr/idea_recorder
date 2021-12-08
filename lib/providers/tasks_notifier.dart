@@ -1,26 +1,30 @@
 import 'dart:collection';
-
-import 'package:flutter/widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weekly_task/models/task.dart';
 import 'package:weekly_task/repositories/task_repository.dart';
 
-class TasksModel extends ChangeNotifier {
-  List<Task> _tasks;
+class TasksNotifier extends StateNotifier<List<Task>> {
+  TasksNotifier({tasks}) : super([]);
 
-  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
+  UnmodifiableListView<Task> get tasks => UnmodifiableListView(state);
+  int get size => state.length;
 
-  TasksModel({@required tasks}) : _tasks = tasks;
+  void setInitialTasks(List<Task> tasks) {
+    state = tasks;
+  }
 
   void addTask(Task task) {
-    _tasks.add(task);
-    notifyListeners();
+    state = [...state, task];
+    persist(state);
   }
 
   void update(String id, String text, DateTime? scheduledDate) {
-    Task task = _tasks.firstWhere((item) => item.id == id);
-    task.text = text;
-    task.scheduled_date = scheduledDate;
-    notifyListeners();
+    List<Task> oldState = [...state];
+    int index = oldState.indexWhere((item) => item.id == id);
+    oldState[index].text = text;
+    oldState[index].scheduled_date = scheduledDate;
+    state = oldState;
+    persist(state);
   }
 
   void swap(int oldIndex, int newIndex) {
@@ -28,32 +32,24 @@ class TasksModel extends ChangeNotifier {
       newIndex -= 1;
     }
 
-    Task deleted = _tasks.removeAt(oldIndex);
-    _tasks.insert(newIndex, deleted);
-    notifyListeners();
+    Task deleted = state.removeAt(oldIndex);
+    state.insert(newIndex, deleted);
+    persist(state);
   }
 
   removeTaskAt(int id) {
-    _tasks.removeAt(id);
-    notifyListeners();
+    state.removeAt(id);
+    persist(state);
   }
 
   toggleCompletedAt(int id) {
-    _tasks[id].toggleCompleted();
-
-    notifyListeners();
+    state[id].toggleCompleted();
+    persist(state);
   }
 
   clearAll() {
-    _tasks.clear();
-
-    notifyListeners();
-  }
-
-  @override
-  void notifyListeners() {
-    super.notifyListeners();
-    persist(this.tasks);
+    state.clear();
+    persist(state);
   }
 }
 

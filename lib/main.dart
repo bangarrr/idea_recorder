@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:weekly_task/models/task.dart';
 import 'package:weekly_task/repositories/task_repository.dart';
 import 'package:weekly_task/screens/task_list.dart';
-import 'package:weekly_task/providers/tasks_model.dart';
 import 'package:weekly_task/screens/note.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:weekly_task/states/tasks.dart';
 
 void main() {
-  initializeDateFormatting().then((_) => runApp(const MyApp()));
+  initializeDateFormatting().then(
+          (_) => runApp(
+              ProviderScope(child: MyApp())
+          )
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
+  /*@override
+  Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
         future: TaskRepoFactory.getInstance().fetchTasks(),
         builder: (context, snapshot) {
@@ -22,22 +27,23 @@ class MyApp extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           } else {
             if (snapshot.hasError) print(snapshot.error);
-            return _buildTodosPage(snapshot);
+            ref.read(tasksProvider.notifier).setInitialTasks(snapshot.data as List<Task>);
+            return MainScreen();
           }
         });
-  }
+  }*/
 
-  Widget _buildTodosPage(AsyncSnapshot snapshot) {
-    return ChangeNotifierProvider(
-        create: (context) => TasksModel(tasks: snapshot.data), child: MainScreen());
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MainScreen();
   }
 }
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends HookConsumerWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
         title: 'Weekly Task',
         theme: ThemeData(
@@ -47,11 +53,11 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends HookConsumerWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: Text('Weekly Task')),
       body: SafeArea(child: TaskList()),

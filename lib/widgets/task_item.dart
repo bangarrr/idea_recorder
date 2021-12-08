@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:weekly_task/models/task.dart';
 import 'package:weekly_task/screens/note.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:weekly_task/providers/tasks_model.dart';
+import 'package:weekly_task/states/tasks.dart';
 
-class TaskItem extends StatelessWidget {
+class TaskItem extends HookConsumerWidget {
   const TaskItem({Key? key, required this.task, required this.index}) : super(key: key);
 
   final Task task;
   final int index;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tasksState = ref.read(tasksProvider.notifier);
+
     final notCompletedIconColor = Color(0xff4ed9d6);
     final completedIconColor = notCompletedIconColor.withAlpha(100);
 
@@ -35,7 +36,7 @@ class TaskItem extends StatelessWidget {
       background: getDissmissBackground(true),
       secondaryBackground: getDissmissBackground(false),
       onDismissed: (DismissDirection direction) =>
-          Provider.of<TasksModel>(context, listen: false).removeTaskAt(index),
+          tasksState.removeTaskAt(index),
       child: Card(
         color: Colors.white,
         child: ListTile(

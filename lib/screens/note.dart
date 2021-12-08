@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:weekly_task/providers/NoteDetailProvider.dart';
 import 'package:weekly_task/models/task.dart';
-import 'package:weekly_task/providers/tasks_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:weekly_task/states/note_detail.dart';
+import 'package:weekly_task/states/tasks.dart';
 import 'package:weekly_task/widgets/calendar_modal.dart';
 
-class Note extends StatefulWidget {
+class Note extends ConsumerStatefulWidget {
   final Task? task;
 
   Note({Key? key, this.task}) : super(key: key);
@@ -16,7 +16,7 @@ class Note extends StatefulWidget {
   _NoteState createState() => _NoteState();
 }
 
-class _NoteState extends State<Note> {
+class _NoteState extends ConsumerState<Note> {
   final TextEditingController _inputCtrl = TextEditingController();
 
   @override
@@ -42,14 +42,14 @@ class _NoteState extends State<Note> {
       return;
     }
 
-    var noteViewModel = Provider.of<NoteDetailProvider>(context, listen: false);
+    var scheduledDate = ref.watch(noteProvider) as DateTime?;
 
     if (widget.task != null) {
-      Provider.of<TasksModel>(context, listen: false)
-          .update(widget.task!.id!, _text, noteViewModel.scheduledDate);
+      ref.read(tasksProvider.notifier)
+          .update(widget.task!.id!, _text, scheduledDate);
     } else {
-      Task task = Task(text: _text, scheduled_date: noteViewModel.scheduledDate);
-      Provider.of<TasksModel>(context, listen: false).addTask(task);
+      Task task = Task(text: _text, scheduled_date: scheduledDate);
+      ref.read(tasksProvider.notifier).addTask(task);
     }
 
     Navigator.of(context).pop();
@@ -57,10 +57,7 @@ class _NoteState extends State<Note> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => NoteDetailProvider(),
-        child: Consumer<NoteDetailProvider>(
-            builder: (context, model, _) => Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text('メモ'),
           actions: [
@@ -80,8 +77,8 @@ class _NoteState extends State<Note> {
                   hintText: '入力してください', border: InputBorder.none),
             ),
           )),
-          MetaOptions(scheduledDate: model.scheduledDate)
-        ]))));
+          MetaOptions(scheduledDate: ref.watch(noteProvider) as DateTime?)
+        ]));
   }
 }
 
